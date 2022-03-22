@@ -1,0 +1,40 @@
+# This workflow will run our tests, generate an lcov code coverage file,
+# and send that coverage to Coveralls 
+
+name: Code Coverage
+
+on:
+  workflow_call:
+    inputs:
+      test_script:
+        required: false
+        type: string
+        default: npx jest --coverage
+    secrets:
+      NPM_TOKEN:
+        required: false
+      caller_github_token:
+        required: true
+
+jobs:
+  Coveralls:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          registry-url: 'https://registry.npmjs.org'
+      # Skip post-install scripts here, as a malicious
+      # script could steal the NPM_TOKEN.
+      - run: npm ci --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # `npm rebuild` will run all those post-install scripts for us.
+      - run: npm rebuild
+      - run: ${{ inputs.test_script }}
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.caller_github_token }}
