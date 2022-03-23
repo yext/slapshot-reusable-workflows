@@ -1,0 +1,51 @@
+name: Percy Snapshots
+
+on: 
+  workflow_call:
+    inputs:
+      build_script:
+        required: false
+        type: string
+        default: npm run build
+      snapshots_script_path:
+        required: false
+        type: string
+      percy_script:
+        required: false
+        type: string
+      PERCY_PARALLEL_TOTAL:
+        required: false
+        type: number
+      PERCY_PARALLEL_NONCE:
+        required: false
+        type: string
+    secrets:
+      PERCY_TOKEN:
+        required: true
+
+jobs:
+  percy_snapshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - run: npm ci
+      - run: ${{ inputs.build_script }}
+      - name: Get Percy script
+        id: vars
+        run: |
+          merged_percy_script='npx percy exec -- node ${{ inputs.snapshots_script_path }}'
+          if [[ '${{ inputs.percy_script }}' ]]
+          then
+            merged_percy_script='${{ inputs.percy_script }}'
+          fi
+          echo ::set-output name=merged_percy_script::${merged_percy_script}
+      - name: Percy Snapshots
+        run: ${{ steps.vars.outputs.merged_percy_script }}
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+          PERCY_PARALLEL_NONCE: ${{ inputs.PERCY_PARALLEL_NONCE }}
+          PERCY_PARALLEL_TOTAL: ${{ inputs.PERCY_PARALLEL_TOTAL }}
