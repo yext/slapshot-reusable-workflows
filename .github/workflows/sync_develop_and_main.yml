@@ -19,8 +19,9 @@ jobs:
         id: vars
         run: |
           PACKAGE_VERSION="v$(cat ./package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')"
+          COMMIT_HASH="$(git rev-parse --short HEAD)"
           echo ::set-output name=tag::${PACKAGE_VERSION}
-          echo ::set-output name=merge_branch_name::"dev/merge-${PACKAGE_VERSION}-into-develop"
+          echo ::set-output name=merge_branch_name::"dev/merge-${PACKAGE_VERSION}-${COMMIT_HASH}-into-develop"
       - name: Create merge branch
         uses: peterjgrainger/action-create-branch@v2.0.1
         with:
