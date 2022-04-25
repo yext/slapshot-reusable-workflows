@@ -7,6 +7,10 @@ on:
         required: false
         type: string
         default: npm run build
+      fetch_depth:
+        required: false
+        type: number
+        default: 1
     secrets:
       NPM_TOKEN:
         required: false
@@ -16,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: ${{ inputs.fetch_depth }}
       - uses: actions/setup-node@v2
         with:
           node-version: 16.x
