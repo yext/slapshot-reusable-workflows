@@ -19,6 +19,10 @@ on:
       PERCY_PARALLEL_NONCE:
         required: false
         type: string
+      fetch_depth:
+        required: false
+        type: number
+        default: 1
     secrets:
       PERCY_TOKEN:
         required: true
@@ -28,6 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: ${{ inputs.fetch_depth }}
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
         with:

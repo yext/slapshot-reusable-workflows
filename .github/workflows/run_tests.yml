@@ -18,6 +18,10 @@ on:
         required: false
         type: string
         default: .
+      node_matrix:
+        required: false
+        type: string
+        default: '["12.x", "14.x", "16.x"]'
     secrets:
       NPM_TOKEN:
         required: false
@@ -32,7 +36,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: ${{ fromJSON(inputs.node_matrix) }}
 
     steps:
       - uses: actions/checkout@v2
