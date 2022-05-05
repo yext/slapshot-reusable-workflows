@@ -11,7 +11,7 @@ on:
       NPM_TOKEN:
         required: false
       REPO_SCOPE_TOKEN:
-        required: false
+        required: true
 
 jobs:
   license-check:
