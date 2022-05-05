@@ -10,7 +10,7 @@ on:
     secrets:
       NPM_TOKEN:
         required: false
-      REPO_SCOPE_TOKEN:
+      REPO_SCOPED_TOKEN:
         required: true
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
       - run: npm install -g generate-license-file
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.REPO_SCOPE_TOKEN }}
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
       # Skip post-install scripts here, as a malicious
       # script could steal the NPM_TOKEN.
       - run: npm ci --ignore-scripts
