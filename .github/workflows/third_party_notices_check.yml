@@ -10,6 +10,8 @@ on:
     secrets:
       NPM_TOKEN:
         required: false
+      REPO_SCOPE_TOKEN:
+        required: false
 
 jobs:
   license-check:
@@ -21,6 +23,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm install -g generate-license-file
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.REPO_SCOPE_TOKEN }}
       # Skip post-install scripts here, as a malicious
       # script could steal the NPM_TOKEN.
       - run: npm ci --ignore-scripts
