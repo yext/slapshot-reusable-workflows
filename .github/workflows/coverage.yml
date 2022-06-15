@@ -28,16 +28,16 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ inputs.comparison_branch }}
-      - uses: yext/slapshot-reusable-workflows/get-coverage@dev/coverage-workflow-prescan
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: ${{ inputs.test_script }}
+      - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
         id: main-coverage
       - run: echo ${{ steps.main-coverage.outputs }}
-      # - name: Use Node.js 16.x
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16.x
-      #     registry-url: 'https://registry.npmjs.org'
-      # - run: npm install -g lcov-parse@1.0.0
-      # - run: npm ci
       # - uses: actions/checkout@v3
       #   with:
       #     ref: ${{ inputs.comparison_branch }}
@@ -51,7 +51,6 @@ jobs:
       #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # - run: npm rebuild
       # - run: ${{ inputs.test_script }}
-
 
       # - name: Coveralls
       #   uses: coverallsapp/github-action@master
