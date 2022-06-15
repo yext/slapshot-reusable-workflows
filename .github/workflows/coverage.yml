@@ -25,20 +25,8 @@ jobs:
   Coveralls:
     runs-on: ubuntu-latest
     steps:
+      # checkout comparison branch
       - uses: actions/checkout@v3
-        # with:
-        #   ref: ${{ inputs.comparison_branch }}
-      # - name: Use Node.js 16.x
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16.x
-      #     registry-url: 'https://registry.npmjs.org'
-      # - run: npm ci
-      # - run: ${{ inputs.test_script }}
-      - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
-        id: main-coverage
-      - run: echo ${{ steps.main-coverage.outputs.coverage-percent }}
-      # - uses: actions/checkout@v3
       #   with:
       #     ref: ${{ inputs.comparison_branch }}
       # - name: Use Node.js 16.x
@@ -49,9 +37,36 @@ jobs:
       # - run: npm ci --ignore-scripts
       #   env:
       #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # - run: npm rebuild
+      - run: npm rebuild
+      # get base coverage
       # - run: ${{ inputs.test_script }}
-
+      - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
+        id: base
+      # checkout current branch
+      # - uses: actions/checkout@v3
+      # - name: Use Node.js 16.x
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16.x
+      #     registry-url: 'https://registry.npmjs.org'
+      # - run: npm ci --ignore-scripts
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - run: npm rebuild
+      # # get current coverage
+      # - run: ${{ inputs.test_script }}
+      - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
+        id: current
+      - run: echo ${{ steps.base.outputs.coverage-percent }}
+      - run: echo ${{ steps.current.outputs.coverage-percent }}
+      - run: |
+        percentIsTooLow=$(( ${{ steps.base.outputs.coverage-percent }} - ${{ steps.current.outputs.coverage-percent }} > 2 ))
+        if [ percentIsTooLow -ne 0 ]
+        then
+          echo 'coverage did not drop more than 2 percent'
+        else
+          exit 1
+        fi
       # - name: Coveralls
       #   uses: coverallsapp/github-action@master
       #   with:

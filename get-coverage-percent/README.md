@@ -12,4 +12,4 @@ The path to the lcov file. Default `coverage/lcov.info`, which is the jest defau
 
 ## `coverage-percent`
 
-The coverage percent, i.e. `90.91`.
+The coverage percent, i.e. `83.59106529209622`.
