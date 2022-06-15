@@ -60,7 +60,8 @@ jobs:
       - run: echo ${{ steps.base.outputs.coverage-percent }}
       - run: echo ${{ steps.current.outputs.coverage-percent }}
       - run: |
-          percentIsTooLow=$(( "${{ steps.base.outputs.coverage-percent }}" - "${{ steps.current.outputs.coverage-percent }}" > 2 ))
+          percentIsTooLow=$(echo ${{ steps.base.outputs.coverage-percent }} ${{ steps.current.outputs.coverage-percent }} |
+            awk '{print ($1 - $2 > 2) }')
           echo $percentIsTooLow
           if [ percentIsTooLow -ne 0 ]
           then
