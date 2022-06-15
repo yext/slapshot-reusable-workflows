@@ -1,5 +1,6 @@
-# This workflow will run our tests, generate an lcov code coverage file,
-# and send that coverage to Coveralls 
+# This workflow will run our tests and generate an lcov code coverage file.
+# If our coverage has not dropped below a certain percent, it will send that
+# coverage to Coveralls
 
 name: Code Coverage
 
@@ -10,6 +11,10 @@ on:
         required: false
         type: string
         default: npx jest --coverage
+      comparison_branch:
+        required: false
+        type: string
+        default: main
     secrets:
       NPM_TOKEN:
         required: false
@@ -20,11 +25,34 @@ jobs:
   Coveralls:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
-          registry-url: 'https://registry.npmjs.org'
-      - run: ls .github
-      - run: ls .github/workflows
+      - uses: actions/checkout@v3
+        # with:
+        #   ref: ${{ inputs.comparison_branch }}
+      run: ls .github/workflows
+      run: ls -a
+      # - name: Use Node.js 16.x
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16.x
+      #     registry-url: 'https://registry.npmjs.org'
+      # - run: npm install -g lcov-parse@1.0.0
+      # - run: npm ci
+      # - uses: actions/checkout@v3
+      #   with:
+      #     ref: ${{ inputs.comparison_branch }}
+      # - name: Use Node.js 16.x
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16.x
+      #     registry-url: 'https://registry.npmjs.org'
+      # - run: npm ci --ignore-scripts
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - run: npm rebuild
+      # - run: ${{ inputs.test_script }}
+
+
+      # - name: Coveralls
+      #   uses: coverallsapp/github-action@master
+      #   with:
+      #     github-token: ${{ secrets.caller_github_token }}
