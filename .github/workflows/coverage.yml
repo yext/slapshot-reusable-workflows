@@ -58,7 +58,6 @@ jobs:
         run: |
           percentIsTooLow=$(echo ${{ steps.base.outputs.coverage-percent }} ${{ steps.current.outputs.coverage-percent }} |
             awk '{print ($1 - $2 > 2) }')
-          echo $percentIsTooLow
           if [ $((percentIsTooLow)) -ne 0 ]
           then
             echo coverage dropped more than 2 percent, exiting action
