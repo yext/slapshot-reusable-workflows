@@ -63,6 +63,7 @@ jobs:
       - name: Upload lcov build artifact
         uses: actions/upload-artifact@v3
         with:
+          name: coverage
           path: coverage/
           retention-days: 1
       - run: pwd
@@ -75,6 +76,7 @@ jobs:
       - name: Download the current coverage
         uses: actions/download-artifact@v3
         with:
+          name: coverage
           path: coverage/
       - run: pwd
       - run: ls coverage
