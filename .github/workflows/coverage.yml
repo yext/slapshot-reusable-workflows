@@ -26,15 +26,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.comparison_branch }}
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
-      - run: ${{ inputs.test_script }}
+        # with:
+        #   ref: ${{ inputs.comparison_branch }}
+      # - name: Use Node.js 16.x
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16.x
+      #     registry-url: 'https://registry.npmjs.org'
+      # - run: npm ci
+      # - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
         id: main-coverage
       - run: echo ${{ steps.main-coverage.outputs }}
