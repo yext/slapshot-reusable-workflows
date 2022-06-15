@@ -42,6 +42,7 @@ jobs:
       - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
         id: base
+      - run: echo base coverage is: ${{ steps.base.outputs.coverage-percent }}%
       # checkout current branch
       - uses: actions/checkout@v3
       - run: npm ci --ignore-scripts
@@ -52,6 +53,7 @@ jobs:
       - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
         id: current
+      - run: echo current coverage is: ${{ steps.current.outputs.coverage-percent }}%
       - name: Check if percent is too low
         run: |
           percentIsTooLow=$(echo ${{ steps.base.outputs.coverage-percent }} ${{ steps.current.outputs.coverage-percent }} |
