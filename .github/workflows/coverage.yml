@@ -29,8 +29,8 @@ jobs:
         with:
           ref: ${{ inputs.comparison_branch }}
       - uses: yext/slapshot-reusable-workflows/get-coverage@dev/coverage-workflow-prescan
-        with:
-          who-to-greet: 'Mona the Octocat'
+        id: main-coverage
+      - run: echo ${{ steps.main-coverage.outputs }}
       # - name: Use Node.js 16.x
       #   uses: actions/setup-node@v3
       #   with:
