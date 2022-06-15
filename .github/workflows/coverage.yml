@@ -65,8 +65,7 @@ jobs:
           echo $percentIsTooLow
           if [ $((percentIsTooLow)) -ne 0 ]
           then
-            echo 'coverage did not drop more than 2 percent'
-          else
+            echo coverage dropped more than 2 percent, exiting action
             exit 1
           fi
       # - name: Coveralls
