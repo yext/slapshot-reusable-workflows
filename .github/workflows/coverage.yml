@@ -25,11 +25,12 @@ jobs:
   Coveralls:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v3
-      #   with:
-      #     ref: ${{ inputs.comparison_branch }}
-      - run: ls .github/workflows
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.comparison_branch }}
       - run: ls -a
+      - run: ls .github
+      - run: ls .github/workflows
       # - name: Use Node.js 16.x
       #   uses: actions/setup-node@v3
       #   with:
