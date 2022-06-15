@@ -3,7 +3,7 @@ const lcovParse = require('lcov-parse');
 
 try {
   const coverageFilePath = core.getInput('coverage-file');
-  lcovParse(coverageFilePath, (err, data) => {
+  lcovParse(coverageFilePath, (err, results) => {
     if (err) {
       throw new Error(err);
     }

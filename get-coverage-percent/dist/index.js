@@ -2206,7 +2206,7 @@ const lcovParse = __nccwpck_require__(454);
 
 try {
   const coverageFilePath = core.getInput('coverage-file');
-  lcovParse(coverageFilePath, (err, data) => {
+  lcovParse(coverageFilePath, (err, results) => {
     if (err) {
       throw new Error(err);
     }
