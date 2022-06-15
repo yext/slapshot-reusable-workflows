@@ -27,3 +27,4 @@ jobs:
           node-version: 16.x
           registry-url: 'https://registry.npmjs.org'
       - run: ls .github
+      - run: ls .github/workflows
