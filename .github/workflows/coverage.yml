@@ -27,38 +27,36 @@ jobs:
     steps:
       # checkout comparison branch
       - uses: actions/checkout@v3
-      #   with:
-      #     ref: ${{ inputs.comparison_branch }}
-      # - name: Use Node.js 16.x
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16.x
-      #     registry-url: 'https://registry.npmjs.org'
-      # - run: npm ci --ignore-scripts
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # - run: npm rebuild
+        with:
+          ref: ${{ inputs.comparison_branch }}
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm rebuild
       # get base coverage
-      # - run: ${{ inputs.test_script }}
+      - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
         id: base
       # checkout current branch
-      # - uses: actions/checkout@v3
-      # - name: Use Node.js 16.x
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16.x
-      #     registry-url: 'https://registry.npmjs.org'
-      # - run: npm ci --ignore-scripts
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # - run: npm rebuild
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm rebuild
       # # get current coverage
-      # - run: ${{ inputs.test_script }}
+      - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
         id: current
-      - run: echo ${{ steps.base.outputs.coverage-percent }}
-      - run: echo ${{ steps.current.outputs.coverage-percent }}
       - run: |
           percentIsTooLow=$(echo ${{ steps.base.outputs.coverage-percent }} ${{ steps.current.outputs.coverage-percent }} |
             awk '{print ($1 - $2 > 2) }')
@@ -68,7 +66,7 @@ jobs:
             echo coverage dropped more than 2 percent, exiting action
             exit 1
           fi
-      # - name: Coveralls
-      #   uses: coverallsapp/github-action@master
-      #   with:
-      #     github-token: ${{ secrets.caller_github_token }}
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.caller_github_token }}
