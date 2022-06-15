@@ -60,13 +60,14 @@ jobs:
       - run: echo ${{ steps.base.outputs.coverage-percent }}
       - run: echo ${{ steps.current.outputs.coverage-percent }}
       - run: |
-        percentIsTooLow=$(( ${{ steps.base.outputs.coverage-percent }} - ${{ steps.current.outputs.coverage-percent }} > 2 ))
-        if [ percentIsTooLow -ne 0 ]
-        then
-          echo 'coverage did not drop more than 2 percent'
-        else
-          exit 1
-        fi
+          percentIsTooLow=$(( ${{ steps.base.outputs.coverage-percent }} - ${{ steps.current.outputs.coverage-percent }} > 2 ))
+          echo $percentIsTooLow
+          if [ percentIsTooLow -ne 0 ]
+          then
+            echo 'coverage did not drop more than 2 percent'
+          else
+            exit 1
+          fi
       # - name: Coveralls
       #   uses: coverallsapp/github-action@master
       #   with:
