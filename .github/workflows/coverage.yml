@@ -57,7 +57,8 @@ jobs:
       - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
         id: current
-      - run: |
+      - name: Check if percent is too low
+        run: |
           percentIsTooLow=$(echo ${{ steps.base.outputs.coverage-percent }} ${{ steps.current.outputs.coverage-percent }} |
             awk '{print ($1 - $2 > 2) }')
           echo $percentIsTooLow
