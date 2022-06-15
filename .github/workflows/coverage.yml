@@ -45,6 +45,7 @@ jobs:
       - run: echo base coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
       - run: pwd
       - run: ls coverage
+      - run: ls coverage/lcov-report
   current-coverage:
     runs-on: ubuntu-latest
     steps:
@@ -67,6 +68,7 @@ jobs:
           retention-days: 1
       - run: pwd
       - run: ls coverage
+      - run: ls coverage/lcov-report
   Coveralls:
     runs-on: ubuntu-latest
     needs: [base-coverage, current-coverage]
@@ -78,6 +80,7 @@ jobs:
           path: coverage/
       - run: pwd
       - run: ls coverage
+      - run: ls coverage/lcov-report
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/test-coveralls
         id: current-coverage
       - run: echo current coverage is ${{ steps.current-coverage.outputs.coverage-percent }}%
