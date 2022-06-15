@@ -22,10 +22,11 @@ on:
         required: true
 
 jobs:
-  Coveralls:
+  base-coverage:
     runs-on: ubuntu-latest
+    outputs:
+      coverage-percent: ${{ steps.parse-coverage.outputs.coverage-percent }}%
     steps:
-      # checkout comparison branch
       - uses: actions/checkout@v3
         with:
           ref: ${{ inputs.comparison_branch }}
@@ -38,25 +39,36 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
-      # get base coverage
       - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
         id: base
-      - run: echo base coverage is ${{ steps.base.outputs.coverage-percent }}%
-      # checkout current branch
+      - run: echo base coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
+  current-coverage:
+    runs-on: ubuntu-latest
+    outputs:
+      coverage-percent: ${{ steps.parse-coverage.outputs.coverage-percent }}%
+    steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: 'https://registry.npmjs.org'
       - run: npm ci --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
-      # get current coverage
       - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
-        id: current
-      - run: echo current coverage is ${{ steps.current.outputs.coverage-percent }}%
+        id: parse-coverage
+      - run: echo current coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
+  Coveralls:
+    runs-on: ubuntu-latest
+    needs: [base-coverage, current-coverage]
+    steps:
       - name: Check if percent is too low
         run: |
-          percentIsTooLow=$(echo ${{ steps.base.outputs.coverage-percent }} ${{ steps.current.outputs.coverage-percent }} |
+          percentIsTooLow=$(echo ${{ needs.base-coverage.outputs.coverage-percent }} ${{ needs.current-coverage.outputs.coverage-percent }} |
             awk '{print ($1 - $2 > 2) }')
           if [ $((percentIsTooLow)) -ne 0 ]
           then
