@@ -37,7 +37,7 @@ jobs:
       # - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/coverage-workflow-prescan
         id: main-coverage
-      - run: echo ${{ steps.main-coverage.outputs }}
+      - run: echo ${{ steps.main-coverage.outputs.coverage-percent }}
       # - uses: actions/checkout@v3
       #   with:
       #     ref: ${{ inputs.comparison_branch }}
