@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ inputs.comparison_branch }}
-      - uses: yext/slapshot-tools/packages/get-coverage@dev/test
+      - uses: yext/slapshot-tools/packages/get-coverage@test
         with:
           who-to-greet: 'Mona the Octocat'
       # - name: Use Node.js 16.x
