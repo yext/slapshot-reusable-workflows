@@ -1,0 +1,13 @@
+name: Get Coverage Percent
+description: gets the coverage percent from an lcov file
+inputs:
+  coverage-file:
+    description: path to the coverage file
+    required: false
+    default: coverage/lcov.info
+outputs:
+  coverage-percent:
+    description: the coverage percent
+runs:
+  using: node16
+  main: dist/index.js

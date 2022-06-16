@@ -1,5 +1,6 @@
-# This workflow will run our tests, generate an lcov code coverage file,
-# and send that coverage to Coveralls 
+# This workflow will run our tests and generate an lcov code coverage file.
+# If our coverage has not dropped below a certain percent, it will send that
+# coverage to Coveralls
 
 name: Code Coverage
 
@@ -10,6 +11,10 @@ on:
         required: false
         type: string
         default: npx jest --coverage
+      comparison_branch:
+        required: false
+        type: string
+        default: main
     secrets:
       NPM_TOKEN:
         required: false
@@ -17,23 +22,71 @@ on:
         required: true
 
 jobs:
-  Coveralls:
+  base-coverage:
     runs-on: ubuntu-latest
+    outputs:
+      coverage-percent: ${{ steps.parse-coverage.outputs.coverage-percent }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.comparison_branch }}
       - name: Use Node.js 16.x
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: 'https://registry.npmjs.org'
-      # Skip post-install scripts here, as a malicious
-      # script could steal the NPM_TOKEN.
       - run: npm ci --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # `npm rebuild` will run all those post-install scripts for us.
       - run: npm rebuild
       - run: ${{ inputs.test_script }}
+      - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
+        id: parse-coverage
+      - run: echo base coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
+  current-coverage:
+    runs-on: ubuntu-latest
+    outputs:
+      coverage-percent: ${{ steps.parse-coverage.outputs.coverage-percent }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm rebuild
+      - run: ${{ inputs.test_script }}
+      - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
+        id: parse-coverage
+      - run: echo current coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
+      - name: Upload lcov build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage/
+          retention-days: 1
+  Coveralls:
+    runs-on: ubuntu-latest
+    needs: [base-coverage, current-coverage]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check if percent is too low
+        run: |
+          percentIsTooLow=$(echo ${{ needs.base-coverage.outputs.coverage-percent }} ${{ needs.current-coverage.outputs.coverage-percent }} |
+            awk '{print ($1 - $2 > 2) }')
+          if [ $((percentIsTooLow)) -ne 0 ]
+          then
+            echo coverage dropped more than 2 percent, exiting action
+            exit 1
+          fi
+      - name: Download the current coverage
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+          path: coverage/
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:

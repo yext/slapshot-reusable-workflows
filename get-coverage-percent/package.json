@@ -1,0 +1,20 @@
+{
+  "name": "get-coverage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build index.js --license THIRD-PARTY-NOTICES && mv dist/THIRD-PARTY-NOTICES THIRD-PARTY-NOTICES",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "@actions/core": "^1.8.2",
+    "lcov-parse": "^1.0.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.34.0"
+  }
+}
