@@ -1,0 +1,20 @@
+name: Run Linter
+
+on:
+  workflow_call:
+    inputs:
+      lint_script:
+        required: false
+        type: string
+        default: npm run lint
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+      - run: npm ci
+      - run: ${{ inputs.lint_script }}
