@@ -4,7 +4,7 @@ inputs:
   coverage-file:
     description: path to the coverage file
     required: false
-    default: coverage/lcov.info
+    default: coverage/merged/lcov.info
 outputs:
   coverage-percent:
     description: the coverage percent

@@ -54,3 +54,4 @@ jobs:
       - run: npm rebuild
       - run: ${{ inputs.build_script }}
       - run: ${{ inputs.test_script }}
+      - run: npm run coverage
