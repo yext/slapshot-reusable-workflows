@@ -65,7 +65,7 @@ jobs:
       - name: Upload lcov build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: coverage-final
+          name: coverage
           path: coverage/merged
           retention-days: 1
   Coveralls:
@@ -85,7 +85,7 @@ jobs:
       - name: Download the current coverage
         uses: actions/download-artifact@v3
         with:
-          name: coverage-final
+          name: coverage
           path: coverage/merged
       - name: Coveralls
         uses: coverallsapp/github-action@master
