@@ -65,8 +65,8 @@ jobs:
       - name: Upload lcov build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: coverage
-          path: coverage/
+          name: coverage-final
+          path: coverage/merged
           retention-days: 1
   Coveralls:
     runs-on: ubuntu-latest
@@ -85,8 +85,8 @@ jobs:
       - name: Download the current coverage
         uses: actions/download-artifact@v3
         with:
-          name: coverage
-          path: coverage/
+          name: coverage-final
+          path: coverage/merged
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
