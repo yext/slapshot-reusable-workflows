@@ -10,7 +10,7 @@ on:
       test_script:
         required: false
         type: string
-        default: npm run coverage
+        default: npx jest --coverage
       comparison_branch:
         required: false
         type: string
