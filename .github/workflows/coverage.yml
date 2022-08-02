@@ -40,7 +40,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
       - run: ${{ inputs.test_script }}
-      - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/report-combined
+      - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
         id: parse-coverage
       - run: echo base coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
   current-coverage:
@@ -59,7 +59,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
       - run: ${{ inputs.test_script }}
-      - uses: yext/slapshot-reusable-workflows/get-coverage-percent@dev/report-combined
+      - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
         id: parse-coverage
       - run: echo current coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
       - name: Upload lcov build artifact
