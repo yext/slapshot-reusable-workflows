@@ -11,6 +11,10 @@ on:
         required: false
         type: string
         default: npx jest --coverage
+      coverage_file:
+        required: false
+        type: string
+        default: coverage/lcov.info
       comparison_branch:
         required: false
         type: string
@@ -41,6 +45,8 @@ jobs:
       - run: npm rebuild
       - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
+        with:
+          coverage-file: ${{ inputs.coverage_file }}
         id: parse-coverage
       - run: echo base coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
   current-coverage:
@@ -60,6 +66,8 @@ jobs:
       - run: npm rebuild
       - run: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
+        with:
+          coverage-file: ${{ inputs.coverage_file }}
         id: parse-coverage
       - run: echo current coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
       - name: Upload lcov build artifact
