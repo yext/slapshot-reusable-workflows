@@ -23,11 +23,12 @@ on:
         required: false
         type: number
         default: 1
+      REACT_APP_MAPBOX_API_KEY:
+        required: false
+        type: string
     secrets:
       PERCY_TOKEN:
         required: true
-      REACT_APP_MAPBOX_API_KEY:
-        required: false
 
 jobs:
   percy_snapshots:
@@ -55,6 +56,6 @@ jobs:
         run: ${{ steps.vars.outputs.merged_percy_script }}
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-          REACT_APP_MAPBOX_API_KEY: ${{ secrets.REACT_APP_MAPBOX_API_KEY }}
+          REACT_APP_MAPBOX_API_KEY: ${{ inputs.REACT_APP_MAPBOX_API_KEY }}
           PERCY_PARALLEL_NONCE: ${{ inputs.PERCY_PARALLEL_NONCE }}
           PERCY_PARALLEL_TOTAL: ${{ inputs.PERCY_PARALLEL_TOTAL }}
