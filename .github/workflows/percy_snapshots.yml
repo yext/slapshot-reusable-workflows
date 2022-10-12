@@ -19,6 +19,9 @@ on:
       PERCY_PARALLEL_NONCE:
         required: false
         type: string
+      REACT_APP_MAPBOX_API_KEY:
+        required: false
+        type: string
       fetch_depth:
         required: false
         type: number
