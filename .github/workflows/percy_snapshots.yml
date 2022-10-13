@@ -24,6 +24,8 @@ on:
         type: number
         default: 1
     secrets:
+      MAPBOX_API_KEY:
+        required: false
       PERCY_TOKEN:
         required: true
 
@@ -40,6 +42,8 @@ jobs:
           node-version: 16.x
       - run: npm ci
       - run: ${{ inputs.build_script }}
+        env:
+          MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
       - name: Get Percy script
         id: vars
         run: |
