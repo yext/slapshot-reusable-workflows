@@ -24,7 +24,7 @@ on:
         type: number
         default: 1
     secrets:
-      REACT_APP_MAPBOX_API_KEY:
+      MAPBOX_API_KEY:
         required: false
       PERCY_TOKEN:
         required: true
@@ -43,7 +43,7 @@ jobs:
       - run: npm ci
       - run: ${{ inputs.build_script }}
         env:
-          REACT_APP_MAPBOX_API_KEY: ${{ secrets.REACT_APP_MAPBOX_API_KEY }}
+          MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
       - name: Get Percy script
         id: vars
         run: |
@@ -56,7 +56,6 @@ jobs:
       - name: Percy Snapshots
         run: ${{ steps.vars.outputs.merged_percy_script }}
         env:
-          REACT_APP_MAPBOX_API_KEY: ${{ secrets.REACT_APP_MAPBOX_API_KEY }}
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           PERCY_PARALLEL_NONCE: ${{ inputs.PERCY_PARALLEL_NONCE }}
           PERCY_PARALLEL_TOTAL: ${{ inputs.PERCY_PARALLEL_TOTAL }}
