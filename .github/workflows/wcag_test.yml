@@ -39,5 +39,3 @@ jobs:
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
       - run: npm run wcag
-        env:
-          MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
