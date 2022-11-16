@@ -14,6 +14,8 @@ on:
     secrets:
       NPM_TOKEN:
         required: false
+      MAPBOX_API_KEY:
+        required: false
 
 jobs:
   WCAG-test:
@@ -35,3 +37,5 @@ jobs:
       - run: npm rebuild
       - run: ${{ inputs.build_script }}
       - run: npm run wcag
+        env:
+          MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
