@@ -36,6 +36,8 @@ jobs:
       # `npm rebuild` will run all those post-install scripts for us.
       - run: npm rebuild
       - run: ${{ inputs.build_script }}
+        env:
+          MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
       - run: npm run wcag
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
