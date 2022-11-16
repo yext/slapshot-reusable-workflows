@@ -14,6 +14,8 @@ on:
     secrets:
       NPM_TOKEN:
         required: false
+      MAPBOX_API_KEY:
+        required: false
 
 jobs:
   WCAG-test:
@@ -34,4 +36,6 @@ jobs:
       # `npm rebuild` will run all those post-install scripts for us.
       - run: npm rebuild
       - run: ${{ inputs.build_script }}
+        env:
+          MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
       - run: npm run wcag
