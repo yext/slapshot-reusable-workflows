@@ -25,7 +25,8 @@ on:
     secrets:
       NPM_TOKEN:
         required: false
-
+      MAPBOX_API_KEY:
+        required: false
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -54,3 +55,5 @@ jobs:
       - run: npm rebuild
       - run: ${{ inputs.build_script }}
       - run: ${{ inputs.test_script }}
+        env:
+          MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
