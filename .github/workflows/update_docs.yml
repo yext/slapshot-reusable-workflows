@@ -29,5 +29,5 @@ jobs:
         with:
           message: "Automated update to repo's documentation from github action"
           add: '*.md'
-          push: origin HEAD
+          push: true
           default_author: github_actions
