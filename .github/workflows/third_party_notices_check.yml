@@ -39,5 +39,5 @@ jobs:
         with:
           message: "Automated update to THIRD-PARTY-NOTICES from github action's 3rd party notices check"
           add: 'THIRD-PARTY-NOTICES'
-          push: origin HEAD
+          push: true
           default_author: github_actions
