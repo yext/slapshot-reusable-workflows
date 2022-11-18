@@ -52,7 +52,7 @@ jobs:
           then
             merged_percy_script='${{ inputs.percy_script }}'
           fi
-          echo ::set-output name=merged_percy_script::${merged_percy_script}
+          echo merged_percy_script=${merged_percy_script} >> $GITHUB_OUTPUT
       - name: Percy Snapshots
         run: ${{ steps.vars.outputs.merged_percy_script }}
         env:
