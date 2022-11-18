@@ -18,6 +18,8 @@ on:
     secrets:
       NPM_TOKEN:
         required: false
+      MAPBOX_API_KEY:
+        required: false
       caller_github_token:
         required: true
 
@@ -40,6 +42,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
       - run: ${{ inputs.test_script }}
+        env:
+          MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
         id: parse-coverage
       - run: echo base coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
@@ -59,6 +63,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
       - run: ${{ inputs.test_script }}
+        env:
+          MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
         id: parse-coverage
       - run: echo current coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
