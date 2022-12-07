@@ -42,6 +42,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
       - run: ${{ inputs.test_script }}
+        shell: bash
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
@@ -63,6 +64,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
       - run: ${{ inputs.test_script }}
+        shell: bash
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
