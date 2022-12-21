@@ -1,0 +1,26 @@
+name: Sync Default Branch with Target Branch
+
+on:
+  workflow_call:
+    inputs:
+      target_branch:
+        required: true
+        type: string
+    secrets:
+      caller_github_token:
+        required: true
+
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    name: Sync branches
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Sync ${{ github.event.repository.default_branch }} with ${{ inputs.target_branch }}
+        uses: devmasx/merge-branch@v1.4.0
+        with:
+          type: now
+          from_branch: ${{ github.event.repository.default_branch }}
+          target_branch: ${{ inputs.target_branch }}
+          github_token: ${{ secrets.caller_github_token }}
