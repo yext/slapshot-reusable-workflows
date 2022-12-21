@@ -4,9 +4,8 @@ on:
   workflow_call:
     inputs:
       target_branch:
-        required: false
+        required: true
         type: string
-        default: storybook-site
     secrets:
       caller_github_token:
         required: true
