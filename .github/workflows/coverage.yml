@@ -96,4 +96,5 @@ jobs:
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         with:
+          file: coverage/lcov.info
           github-token: ${{ secrets.caller_github_token }}
