@@ -41,12 +41,13 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
-      - run: ${{ inputs.test_script }}
+      - run: "$TEST_SCRIPT"
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
+          TEST_SCRIPT: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
         id: parse-coverage
-      - run: echo base coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
+      - run: echo "base coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%"
   current-coverage:
     runs-on: ubuntu-latest
     outputs:
@@ -62,12 +63,13 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
-      - run: ${{ inputs.test_script }}
+      - run: "$TEST_SCRIPT"
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
+          TEST_SCRIPT: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
         id: parse-coverage
-      - run: echo current coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%
+      - run: echo "current coverage is ${{ steps.parse-coverage.outputs.coverage-percent }}%"
       - name: Upload lcov build artifact
         uses: actions/upload-artifact@v4
         with:

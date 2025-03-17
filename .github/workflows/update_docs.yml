@@ -23,7 +23,9 @@ jobs:
         with:
           node-version: 16.x
       - run: npm ci
-      - run: ${{ inputs.build_script }}
+      - run: "$BUILD_SCRIPT"
+        env:
+          BUILD_SCRIPT: ${{ inputs.build_script }}
       - name: Update Documentation
         uses: EndBug/add-and-commit@v9
         with:
