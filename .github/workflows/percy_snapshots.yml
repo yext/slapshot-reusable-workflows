@@ -1,6 +1,6 @@
 name: Percy Snapshots
 
-on: 
+on:
   workflow_call:
     inputs:
       build_script:
@@ -41,20 +41,24 @@ jobs:
         with:
           node-version: 16.x
       - run: npm ci
-      - run: ${{ inputs.build_script }}
+      - run: "$BUILD_SCRIPT"
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
+          BUILD_SCRIPT: ${{ inputs.build_script }}
       - name: Get Percy script
         id: vars
         run: |
-          merged_percy_script='npx percy exec -- node ${{ inputs.snapshots_script_path }}'
-          if [[ '${{ inputs.percy_script }}' ]]
+          merged_percy_script='npx percy exec -- node "$SNAPSHOTS_SCRIPT_PATH"'
+          if [[ '"$PERCY_SCRIPT"' ]]
           then
-            merged_percy_script='${{ inputs.percy_script }}'
+            merged_percy_script='"$PERCY_SCRIPT"'
           fi
-          echo merged_percy_script=${merged_percy_script} >> $GITHUB_OUTPUT
+          echo "merged_percy_script=${merged_percy_script}" >> $GITHUB_OUTPUT
+        env:
+          SNAPSHOTS_SCRIPT_PATH: ${{ inputs.snapshots_script_path }}
+          PERCY_SCRIPT: ${{ inputs.percy_script }}
       - name: Percy Snapshots
-        run: ${{ steps.vars.outputs.merged_percy_script }}
+        run: "${{ steps.vars.outputs.merged_percy_script }}"
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           PERCY_PARALLEL_NONCE: ${{ inputs.PERCY_PARALLEL_NONCE }}
