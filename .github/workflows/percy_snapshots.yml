@@ -57,8 +57,9 @@ jobs:
         env:
           SNAPSHOTS_SCRIPT_PATH: ${{ inputs.snapshots_script_path }}
           PERCY_SCRIPT: ${{ inputs.percy_script }}
+          MERGED_PERCY_SCRIPT: ${{ steps.vars.outputs.merged_percy_script }}
       - name: Percy Snapshots
-        run: "${{ steps.vars.outputs.merged_percy_script }}"
+        run: "$MERGED_PERCY_SCRIPT"
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
           PERCY_PARALLEL_NONCE: ${{ inputs.PERCY_PARALLEL_NONCE }}
