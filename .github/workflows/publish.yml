@@ -1,0 +1,76 @@
+name: Publish Package
+
+on:
+  workflow_call:
+
+permissions:
+  id-token: write # Required for OIDC
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: Release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Set node version to 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          registry-url: https://registry.npmjs.org/
+          cache: "npm"
+
+      - name: Install deps
+        run: npm i --ignore-scripts
+
+      - name: Update npm
+        # npm version npm 11.5.1 or later needed for Trusted Publishing
+        run: npm install -g npm@latest
+
+      - name: Verify package version and get npm tag
+        id: get_npm_tag
+        run: |
+          set -e
+
+          node <<'EOF'
+          const fs = require('fs');
+          const path = require('path');
+
+          const commitMsg = process.env.COMMIT_MSG;
+
+          const pkgPath = path.resolve(process.cwd(), 'package.json');
+          const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+
+          const { version: currentVersion, private: isPrivate } = pkg;
+
+          if (isPrivate) {
+            console.error('Package is private.');
+            process.exit(1);
+          }
+
+          const expectedCommitMsg = `release: v${currentVersion}`;
+          if (!commitMsg === expectedCommitMsg) {
+            console.error(`Invalid commit message. \nExpected: '${expectedCommitMsg}'.\nActual: '${commitMsg}'`);
+            process.exit(1);
+          }
+
+          let npmTag = 'latest';
+          if (currentVersion.includes('rc')) npmTag = 'rc';
+          else if (currentVersion.includes('beta')) npmTag = 'beta';
+          else if (currentVersion.includes('alpha')) npmTag = 'alpha';
+
+          // Export to GitHub Actions output
+          fs.writeFileSync(process.env.GITHUB_OUTPUT, `npm_tag=${npmTag}\n`, { flag: 'a' });
+          EOF
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+      
+      - name: Debug npm tag
+        run: |
+          echo "npm_tag='${{ steps.get_npm_tag.outputs.npm_tag }}'"
+
+      - name: Publish
+        run: npm publish --access public --tag ${{ steps.get_npm_tag.outputs.npm_tag }}
