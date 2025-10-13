@@ -1,0 +1,12 @@
+name: Verify Publish
+description: verify package version and get npm tag
+inputs:
+  COMMIT_MSG:
+    description: The commit message for the release
+    required: true
+outputs:
+  npm_tag:
+    description: The npm tag to publish under
+runs:
+  using: node20
+  main: dist/index.js
