@@ -1,15 +1,15 @@
-# Get Coverage Percent
+# Verify Publish
 
-This action gets the coverage percent from an lcov file.
+This action verifies package version and get npm tag to publish
 
 ## Inputs
 
-## `coverage-file`
+## `COMMIT_MSG`
 
-The path to the lcov file. Default `coverage/lcov.info`, which is the jest default at the time of writing.
+The commit message for the release.
 
 ## Outputs
 
-## `coverage-percent`
+## `npm_tag`
 
-The coverage percent, i.e. `83.59106529209622`.
+The npm tag to publish under
