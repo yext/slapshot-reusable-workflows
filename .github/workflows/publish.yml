@@ -35,10 +35,6 @@ jobs:
         uses: yext/slapshot-reusable-workflows/verify-publish@v1
         with:
           COMMIT_MSG: ${{ github.event.head_commit.message }}
-      
-      - name: Debug npm tag
-        run: |
-          echo "npm_tag='${{ steps.get_npm_tag.outputs.npm_tag }}'"
 
       - name: Publish
         run: npm publish --access public --tag ${{ steps.get_npm_tag.outputs.npm_tag }}
