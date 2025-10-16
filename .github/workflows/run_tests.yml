@@ -53,16 +53,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # `npm rebuild` will run all those post-install scripts for us.
       - run: npm rebuild
-      - run: |
-          echo "$BUILD_SCRIPT" > build.sh
-          chmod +x build.sh
-          ./build.sh
-        env:
-          BUILD_SCRIPT: ${{ inputs.build_script }}
-      - run: |
-          echo "$TEST_SCRIPT" > test.sh
-          chmod +x test.sh
-          ./test.sh
+      - uses: yext/slapshot-reusable-workflows/run-script@v1
+        with:
+          script: ${{ inputs.build_script }}
+      - uses: yext/slapshot-reusable-workflows/run-script@v1
+        with:
+          script: ${{ inputs.test_script }}
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
-          TEST_SCRIPT: ${{ inputs.test_script }}

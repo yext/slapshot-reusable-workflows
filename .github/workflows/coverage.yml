@@ -41,13 +41,11 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
-      - run: |
-          echo "$TEST_SCRIPT" > test.sh
-          chmod +x test.sh
-          ./test.sh
+      - uses: yext/slapshot-reusable-workflows/run-script@v1
+        with:
+          script: ${{ inputs.test_script }}
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
-          TEST_SCRIPT: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
         id: parse-coverage
       - run: echo base coverage is "$COVERAGE_PERCENT"%
@@ -68,13 +66,11 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm rebuild
-      - run: |
-          echo "$TEST_SCRIPT" > test.sh
-          chmod +x test.sh
-          ./test.sh
+      - uses: yext/slapshot-reusable-workflows/run-script@v1
+        with:
+          script: ${{ inputs.test_script }}
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
-          TEST_SCRIPT: ${{ inputs.test_script }}
       - uses: yext/slapshot-reusable-workflows/get-coverage-percent@v1
         id: parse-coverage
       - run: echo current coverage is "$COVERAGE_PERCENT"%
