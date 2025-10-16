@@ -1,4 +1,4 @@
-# Get Coverage Percent
+# Run Script
 
 This action executes a multi-line shell script from an input variable
 
