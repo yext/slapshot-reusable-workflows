@@ -1,0 +1,9 @@
+name: Run Script
+description: Executes a multi-line shell script from an input variable
+inputs:
+  script:
+    description: The shell script content to run
+    required: true
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
