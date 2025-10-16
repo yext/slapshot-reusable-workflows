@@ -3,12 +3,14 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 
 try {
-  const script = core.getInput('script', { required: true });
+  const tmpDir = process.env.RUNNER_TEMP || os.tmpdir();
+  const scriptPath = path.join(tmpDir, `script-${Date.now()}.sh`);
 
-  fs.writeFileSync('script.sh', `#!/bin/bash\n${script}`);
-  fs.chmodSync('script.sh', 0o755);
+  fs.writeFileSync(scriptPath, `#!/bin/bash\n${script}`);
+  fs.chmodSync(scriptPath, 0o755);
 
-  execSync('./script.sh', { stdio: 'inherit' });
+  execSync(scriptPath, { stdio: 'inherit' });
+  fs.unlinkSync(scriptPath);
 } catch (error) {
   core.setFailed(error.message);
 }
