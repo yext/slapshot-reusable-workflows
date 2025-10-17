@@ -40,5 +40,4 @@ jobs:
           script: ${{ inputs.build_script }}
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
-          BUILD_SCRIPT: ${{ inputs.build_script }}
       - run: npm run wcag
