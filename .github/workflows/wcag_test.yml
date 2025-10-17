@@ -35,8 +35,9 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # `npm rebuild` will run all those post-install scripts for us.
       - run: npm rebuild
-      - run: "$BUILD_SCRIPT"
+      - uses: yext/slapshot-reusable-workflows/run-script@v1
+        with:
+          script: ${{ inputs.build_script }}
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
-          BUILD_SCRIPT: ${{ inputs.build_script }}
       - run: npm run wcag
