@@ -4,6 +4,10 @@ inputs:
   script:
     description: The shell script content to run
     required: true
+  working_directory:
+    description: The working directory where the script should run
+    required: false
+    default: '.'
 runs:
   using: 'node20'
   main: 'dist/index.js'

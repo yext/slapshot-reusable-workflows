@@ -4,6 +4,9 @@ inputs:
   COMMIT_MSG:
     description: The commit message for the release
     required: true
+  REPO_PATH:
+    description: The path to the repo to be published
+    required: true
 outputs:
   npm_tag:
     description: The npm tag to publish under
