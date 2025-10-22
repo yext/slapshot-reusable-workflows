@@ -2821,10 +2821,11 @@ const core = __nccwpck_require__(186);
 const fs = __nccwpck_require__(147);
 const path = __nccwpck_require__(17);
 
-const commitMsg = process.env.COMMIT_MSG;
+const commitMsg = core.getInput('COMMIT_MSG');
+const repoPath = core.getInput('REPO_PATH');
 
-const pkgPath = __nccwpck_require__.ab + "package.json";
-const pkg = JSON.parse(fs.readFileSync(__nccwpck_require__.ab + "package.json", 'utf8'));
+const pkgPath = path.join(repoPath, 'package.json');
+const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 
 const { version: currentVersion, private: isPrivate } = pkg;
 
@@ -2833,7 +2834,7 @@ if (isPrivate) {
 }
 
 const expectedCommitMsg = `release: v${currentVersion}`;
-if (!commitMsg === expectedCommitMsg) {
+if (commitMsg !== expectedCommitMsg) {
   core.setFailed(`Invalid commit message. \nExpected: '${expectedCommitMsg}'.\nActual: '${commitMsg}'`);
 }
 
