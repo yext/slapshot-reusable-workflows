@@ -2827,15 +2827,24 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(186);
 const fs = __nccwpck_require__(147);
+const path = __nccwpck_require__(17);
 const { execSync } = __nccwpck_require__(81);
 
 try {
-  const script = core.getInput('script', { required: true });
+  const tmpDir = process.env.RUNNER_TEMP || os.tmpdir();
+  const script = core.getInput('script');
+  const scriptPath = path.join(tmpDir, `script-${Date.now()}.sh`);
 
-  fs.writeFileSync('script.sh', `#!/bin/bash\n${script}`);
-  fs.chmodSync('script.sh', 0o755);
+  fs.writeFileSync(scriptPath, `#!/bin/bash\n${script}`);
+  fs.chmodSync(scriptPath, 0o755);
 
-  execSync('./script.sh', { stdio: 'inherit' });
+  const workingDirectory = core.getInput('working_directory');
+  execSync(scriptPath, {
+    stdio: 'inherit',
+    cwd: workingDirectory,
+    env: process.env,
+  });
+  fs.unlinkSync(scriptPath);
 } catch (error) {
   core.setFailed(error.message);
 }

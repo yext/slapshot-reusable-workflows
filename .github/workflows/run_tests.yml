@@ -56,8 +56,10 @@ jobs:
       - uses: yext/slapshot-reusable-workflows/run-script@v1
         with:
           script: ${{ inputs.build_script }}
+          working_directory: ${{ inputs.working_directory }}
       - uses: yext/slapshot-reusable-workflows/run-script@v1
         with:
           script: ${{ inputs.test_script }}
+          working_directory: ${{ inputs.working_directory }}
         env:
           MAPBOX_API_KEY: ${{ secrets.MAPBOX_API_KEY }}
