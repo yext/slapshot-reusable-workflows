@@ -21,7 +21,7 @@ on:
       node_matrix:
         required: false
         type: string
-        default: '["16.x"]'
+        default: '["18.x"]'
     secrets:
       NPM_TOKEN:
         required: false
