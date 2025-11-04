@@ -1,15 +1,10 @@
 name: Verify Publish
-description: verify package version and get npm tag
-inputs:
-  COMMIT_MSG:
-    description: The commit message for the release
-    required: true
-  REPO_PATH:
-    description: The path to the repo to be published
-    required: true
+description: verify NPM publish readiness and determine npm dist-tag
 outputs:
   npm_tag:
-    description: The npm tag to publish under
+    description: The npm dist-tag to publish
+  working_directory:
+    description: The directory that contains the package to be published if package is part of a monorepo
 runs:
   using: node20
   main: dist/index.js

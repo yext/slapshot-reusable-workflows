@@ -28,12 +28,13 @@ jobs:
         # npm version npm 11.5.1 or later needed for Trusted Publishing
         run: npm install -g npm@latest
 
-      - name: Verify package version and get npm tag
-        id: get_npm_tag
+      - name: Verify NPM publish readiness and determine npm dist-tag
+        id: verify_publish
         uses: yext/slapshot-reusable-workflows/verify-publish@v1
-        with:
-          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           REPO_PATH: ${{ github.workspace }}
 
       - name: Publish
-        run: npm publish --access public --tag ${{ steps.get_npm_tag.outputs.npm_tag }}
+        working-directory: ${{ steps.verify_publish.outputs.working_directory }}
+        run: npm publish --access public --tag ${{ steps.verify_publish.outputs.npm_tag }}

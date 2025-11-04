@@ -1,15 +1,13 @@
 # Verify Publish
 
-This action verifies package version and get npm tag to publish
-
-## Inputs
-
-## `COMMIT_MSG`
-
-The commit message for the release.
+This action verifies NPM publish readiness and determine npm dist-tag
 
 ## Outputs
 
 ## `npm_tag`
 
-The npm tag to publish under
+The npm dist-tag to publish.
+
+## `working_directory`
+
+The directory that contains the package to be published if package is part of a monorepo.
