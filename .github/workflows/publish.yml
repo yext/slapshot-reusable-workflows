@@ -30,7 +30,7 @@ jobs:
 
       - name: Verify NPM publish readiness and determine npm dist-tag
         id: verify_publish
-        uses: anguyen-yext2/slapshot-reusable-workflows-test/verify-publish@v1
+        uses: yext/slapshot-reusable-workflows/verify-publish@v1
         env:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           REPO_PATH: ${{ github.workspace }}
