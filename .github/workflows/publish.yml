@@ -25,8 +25,9 @@ jobs:
         run: npm i --ignore-scripts
 
       - name: Update npm
-        # npm version npm 11.5.1 or later needed for Trusted Publishing
-        run: npm install -g npm@latest
+        # npm version 11.5.1 or later needed for Trusted Publishing, and version 11.6.3 has a bug
+        # that breaks publishing (see https://github.com/npm/cli/issues/8757)
+        run: npm install -g npm@11.6.2
 
       - name: Verify NPM publish readiness and determine npm dist-tag
         id: verify_publish
