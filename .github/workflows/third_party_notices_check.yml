@@ -7,6 +7,10 @@ on:
         required: false
         type: string
         default: ubuntu-latest
+      generate_license_args:
+        required: false
+        type: string
+        default: --input package.json --output ./THIRD-PARTY-NOTICES --overwrite
     secrets:
       NPM_TOKEN:
         required: false
@@ -33,7 +37,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # `npm rebuild` will run all those post-install scripts for us.
       - run: npm rebuild
-      - run: generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite
+      - run: generate-license-file ${{ inputs.generate_license_args }}
       - name: Update THIRD-PARTY-NOTICES
         uses: EndBug/add-and-commit@v9
         with:
