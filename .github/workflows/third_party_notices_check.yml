@@ -7,6 +7,14 @@ on:
         required: false
         type: string
         default: ubuntu-latest
+      generate_license_args:
+        required: false
+        type: string
+        default: --input package.json --output ./THIRD-PARTY-NOTICES --overwrite
+      generate_license_version:
+        required: false
+        type: string
+        default: '1'
     secrets:
       NPM_TOKEN:
         required: false
@@ -21,7 +29,7 @@ jobs:
         with:
           node-version: 18.x
           registry-url: 'https://registry.npmjs.org'
-      - run: npm install -g generate-license-file@1
+      - run: npm install -g generate-license-file@${{ inputs.generate_license_version }}
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
@@ -33,7 +41,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # `npm rebuild` will run all those post-install scripts for us.
       - run: npm rebuild
-      - run: generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite
+      - run: generate-license-file ${{ inputs.generate_license_args }}
       - name: Update THIRD-PARTY-NOTICES
         uses: EndBug/add-and-commit@v9
         with:
