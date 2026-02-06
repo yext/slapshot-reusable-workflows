@@ -49,9 +49,9 @@ jobs:
         id: vars
         run: |
           merged_percy_script='npx percy exec -- node "$SNAPSHOTS_SCRIPT_PATH"'
-          if [[ '"$PERCY_SCRIPT"' ]]
+          if [[ -n "${PERCY_SCRIPT:-}" ]]
           then
-            merged_percy_script='"$PERCY_SCRIPT"'
+            merged_percy_script="${PERCY_SCRIPT}"
           fi
           echo "merged_percy_script=${merged_percy_script}" >> $GITHUB_OUTPUT
         env:
